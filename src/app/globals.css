@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-text-primary;
+  }
+
+  /* Apply display font to headings */
+  h1, h2, h3, h4,
+  .text-display, .text-h1, .text-h2, .text-h3, .text-h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-accent-100 text-accent-900;
+  }
+
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-prose {
+    @apply max-w-prose mx-auto px-4 sm:px-6;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .section-padding-sm {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Mesh gradient for hero and feature sections - uses indigo palette */
+  .bg-mesh-gradient {
+    background-color: #ffffff;
+    background-image:
+      radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.07) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, rgba(165, 180, 252, 0.09) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, rgba(224, 231, 255, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 80%, rgba(129, 140, 248, 0.05) 0px, transparent 50%);
+  }
+
+  /* Subtle grain texture overlay */
+  .bg-grain {
+    position: relative;
+  }
+
+  .bg-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bg-grain > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Animated link underline effect */
+  .link-underline {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .link-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Animated checkmark for success states */
+  .animate-check path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: checkDraw 0.4s ease-out 0.2s forwards;
+  }
+
+  @keyframes checkDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Loading spinner */
+  .loading-spinner {
+    @apply w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin;
+  }
+}
