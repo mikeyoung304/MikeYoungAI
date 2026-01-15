@@ -1,15 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select } from '@/components/ui/select';
-import { FadeIn } from '@/components/ui/motion-fade';
 import { contact } from '@/lib/content';
 import { cn } from '@/lib/utils';
-import { SPRING } from '@/lib/motion';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -17,7 +15,6 @@ function LoadingSpinner() {
   return (
     <svg
       className="animate-spin h-5 w-5"
-      xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
     >
@@ -38,40 +35,9 @@ function LoadingSpinner() {
   );
 }
 
-function SuccessCheckmark() {
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      initial={shouldReduceMotion ? {} : { scale: 0, opacity: 0 }}
-      animate={shouldReduceMotion ? {} : { scale: 1, opacity: 1 }}
-      transition={SPRING}
-      className="w-20 h-20 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow-sm"
-    >
-      <motion.svg
-        className="w-10 h-10 text-accent-600"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-        initial={shouldReduceMotion ? {} : { pathLength: 0 }}
-        animate={shouldReduceMotion ? {} : { pathLength: 1 }}
-        transition={{ delay: 0.2, duration: 0.5, ease: 'easeOut' }}
-      >
-        <motion.path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M5 13l4 4L19 7"
-        />
-      </motion.svg>
-    </motion.div>
-  );
-}
-
 export function ContactSection() {
   const [formState, setFormState] = useState<FormState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const shouldReduceMotion = useReducedMotion();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -96,46 +62,33 @@ export function ContactSection() {
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send message');
-      }
-
+      if (!response.ok) throw new Error('Failed to send message');
       setFormState('success');
     } catch {
       setFormState('error');
-      setErrorMessage(
-        'Something went wrong. Please try again or email directly.'
-      );
+      setErrorMessage('Something went wrong. Please try again or email directly.');
     }
   }
+
+  const fadeUp = (delay: number) => ({
+    initial: { opacity: 0, y: 8 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, delay },
+  });
 
   if (formState === 'success') {
     return (
       <section id="contact" className="section-padding bg-background-alt">
         <div className="container-content">
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-            animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
-            transition={SPRING}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <SuccessCheckmark />
-            <motion.h2
-              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
-              transition={{ ...SPRING, delay: 0.3 }}
-              className="text-h2 text-ink mb-4"
-            >
-              Message sent
-            </motion.h2>
-            <motion.p
-              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={shouldReduceMotion ? {} : { opacity: 1, y: 0 }}
-              transition={{ ...SPRING, delay: 0.4 }}
-              className="text-body-lg text-ink-muted"
-            >
-              I&apos;ll get back to you within 24 hours.
-            </motion.p>
+          <motion.div {...fadeUp(0)} className="max-w-2xl mx-auto text-center">
+            <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-h2 text-text-primary mb-4">Message sent</h2>
+            <p className="text-body-lg text-text-secondary">I&apos;ll get back to you within 24 hours.</p>
           </motion.div>
         </div>
       </section>
@@ -143,120 +96,64 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="section-padding section-divider bg-background-alt">
+    <section id="contact" className="section-padding bg-background-alt">
       <div className="container-content">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Intro */}
-          <FadeIn direction="up">
-            <h2 className="heading-ruled text-h2 text-ink mb-6">
-              {contact.headline}
-            </h2>
-            <p className="text-body-lg text-ink-muted mb-4">
-              {contact.description}
+          <motion.div {...fadeUp(0)}>
+            <h2 className="text-h2 text-text-primary mb-6">{contact.headline}</h2>
+            <p className="text-body-lg text-text-secondary mb-8">{contact.description}</p>
+            <p className="text-body text-text-muted">
+              {contact.fallback.text}{' '}
+              <a
+                href={`mailto:${contact.fallback.email}`}
+                className="text-text-primary hover:text-accent-600 transition-colors"
+              >
+                {contact.fallback.email}
+              </a>
             </p>
-            {contact.emphasis && (
-              <p className="text-body-lg text-ink font-medium mb-8">
-                {contact.emphasis}
-              </p>
-            )}
-            <div className="space-y-4 text-body text-ink-muted">
-              <p>
-                {contact.fallback.text}{' '}
-                <a
-                  href={`mailto:${contact.fallback.email}`}
-                  className="text-ink hover:text-primary transition-colors link-underline"
-                >
-                  {contact.fallback.email}
-                </a>
-              </p>
-              {contact.location && <p>{contact.location}</p>}
-            </div>
-          </FadeIn>
+          </motion.div>
 
-          {/* Form */}
-          <FadeIn direction="up" delay={0.1}>
-            <motion.div
-              whileHover={shouldReduceMotion ? undefined : { y: -4 }}
-              transition={SPRING}
-              className="glass rounded-2xl p-6 md:p-8 shadow-card hover:shadow-elevated transition-shadow"
-            >
-              <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Form - system card motif */}
+          <motion.div {...fadeUp(0.1)}>
+            <div className="bg-white border border-border rounded-xl shadow-soft p-6 md:p-8">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-body-sm font-medium text-ink mb-2"
-                    >
+                    <label htmlFor="name" className="block text-body-sm font-medium text-text-primary mb-2">
                       Name
                     </label>
-                    <Input
-                      id="name"
-                      name="name"
-                      required
-                      placeholder="Your name"
-                      disabled={formState === 'submitting'}
-                    />
+                    <Input id="name" name="name" required placeholder="Your name" disabled={formState === 'submitting'} />
                   </div>
                   <div>
-                    <label
-                      htmlFor="company"
-                      className="block text-body-sm font-medium text-ink mb-2"
-                    >
+                    <label htmlFor="company" className="block text-body-sm font-medium text-text-primary mb-2">
                       Company
                     </label>
-                    <Input
-                      id="company"
-                      name="company"
-                      placeholder="Company name"
-                      disabled={formState === 'submitting'}
-                    />
+                    <Input id="company" name="company" placeholder="Company name" disabled={formState === 'submitting'} />
                   </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-body-sm font-medium text-ink mb-2"
-                  >
+                  <label htmlFor="email" className="block text-body-sm font-medium text-text-primary mb-2">
                     Email
                   </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="you@company.com"
-                    disabled={formState === 'submitting'}
-                  />
+                  <Input id="email" name="email" type="email" required placeholder="you@company.com" disabled={formState === 'submitting'} />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="projectType"
-                    className="block text-body-sm font-medium text-ink mb-2"
-                  >
+                  <label htmlFor="projectType" className="block text-body-sm font-medium text-text-primary mb-2">
                     What do you need?
                   </label>
-                  <Select
-                    id="projectType"
-                    name="projectType"
-                    required
-                    disabled={formState === 'submitting'}
-                  >
+                  <Select id="projectType" name="projectType" required disabled={formState === 'submitting'}>
                     <option value="">Select an option</option>
                     {contact.form.projectTypes.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
+                      <option key={type.value} value={type.value}>{type.label}</option>
                     ))}
                   </Select>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="description"
-                    className="block text-body-sm font-medium text-ink mb-2"
-                  >
+                  <label htmlFor="description" className="block text-body-sm font-medium text-text-primary mb-2">
                     Tell me about your project
                   </label>
                   <Textarea
@@ -271,68 +168,39 @@ export function ContactSection() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label
-                      htmlFor="timeline"
-                      className="block text-body-sm font-medium text-ink mb-2"
-                    >
+                    <label htmlFor="timeline" className="block text-body-sm font-medium text-text-primary mb-2">
                       Timeline
                     </label>
-                    <Select
-                      id="timeline"
-                      name="timeline"
-                      disabled={formState === 'submitting'}
-                    >
+                    <Select id="timeline" name="timeline" disabled={formState === 'submitting'}>
                       <option value="">Select timeline</option>
                       {contact.form.timelines.map((t) => (
-                        <option key={t.value} value={t.value}>
-                          {t.label}
-                        </option>
+                        <option key={t.value} value={t.value}>{t.label}</option>
                       ))}
                     </Select>
                   </div>
                   <div>
-                    <label
-                      htmlFor="budget"
-                      className="block text-body-sm font-medium text-ink mb-2"
-                    >
+                    <label htmlFor="budget" className="block text-body-sm font-medium text-text-primary mb-2">
                       Budget range
                     </label>
-                    <Select
-                      id="budget"
-                      name="budget"
-                      disabled={formState === 'submitting'}
-                    >
+                    <Select id="budget" name="budget" disabled={formState === 'submitting'}>
                       <option value="">Select budget</option>
                       {contact.form.budgets.map((b) => (
-                        <option key={b.value} value={b.value}>
-                          {b.label}
-                        </option>
+                        <option key={b.value} value={b.value}>{b.label}</option>
                       ))}
                     </Select>
                   </div>
                 </div>
 
-                {/* Error state */}
-                <AnimatePresence>
-                  {formState === 'error' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="p-4 bg-red-50 border border-red-200 rounded-lg"
-                    >
-                      <p className="text-body-sm text-red-600">{errorMessage}</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {formState === 'error' && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-body-sm text-red-600">{errorMessage}</p>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
                   size="lg"
-                  className={cn(
-                    'w-full',
-                    formState === 'submitting' && 'opacity-80'
-                  )}
+                  className={cn('w-full', formState === 'submitting' && 'opacity-70')}
                   disabled={formState === 'submitting'}
                 >
                   {formState === 'submitting' ? (
@@ -345,8 +213,8 @@ export function ContactSection() {
                   )}
                 </Button>
               </form>
-            </motion.div>
-          </FadeIn>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

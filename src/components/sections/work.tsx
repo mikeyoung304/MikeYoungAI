@@ -1,15 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { work } from '@/lib/content';
-import { FadeIn } from '@/components/ui/motion-fade';
-import {
-  staggerContainer,
-  fadeInUp,
-  cardHover,
-  cardTap,
-  SPRING_SNAPPY,
-} from '@/lib/motion';
 
 function ProjectCard({
   project,
@@ -18,89 +10,75 @@ function ProjectCard({
   project: (typeof work.projects)[0];
   index: number;
 }) {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
-    <motion.div
-      variants={fadeInUp}
-      whileHover={shouldReduceMotion ? undefined : cardHover}
-      whileTap={shouldReduceMotion ? undefined : cardTap}
-      className="h-full glass rounded-2xl overflow-hidden cursor-pointer group shadow-card hover:shadow-elevated transition-shadow"
+    <motion.article
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1],
+        delay: index * 0.1,
+      }}
+      // System card: lifts on hover for depth
+      whileHover={{ y: -4 }}
+      className="group h-full"
     >
-      <div className="h-full p-6 flex flex-col">
-        {/* Project Number Badge */}
-        <div className="mb-4">
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-light text-primary text-sm font-semibold">
-            {String(index + 1).padStart(2, '0')}
-          </span>
-        </div>
-
-        {/* Title */}
-        <h3 className="text-h4 text-ink mb-3 group-hover:text-primary transition-colors">
+      {/* System card motif: light border, soft radius, slight shadow */}
+      <div className="h-full p-6 bg-white border border-border rounded-xl shadow-soft transition-shadow duration-400 hover:shadow-medium">
+        <h3 className="text-h4 text-text-primary mb-3 group-hover:text-accent-700 transition-colors duration-400">
           {project.title}
         </h3>
 
-        {/* Description */}
-        <p className="text-body text-ink-muted mb-6 flex-grow">
+        <p className="text-body text-text-secondary mb-6">
           {project.description}
         </p>
 
-        {/* Link with animated arrow */}
         <a
           href={project.link.href}
-          className="inline-flex items-center gap-2 text-body-sm font-medium text-ink hover:text-primary transition-colors group/link"
+          className="inline-flex items-center gap-2 text-body-sm font-medium text-text-muted hover:text-text-primary transition-colors duration-400"
         >
           {project.link.text}
-          <motion.svg
-            className="w-4 h-4"
+          <svg
+            className="w-4 h-4 transition-transform duration-400 group-hover:translate-x-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth={2}
-            whileHover={shouldReduceMotion ? undefined : { x: 4 }}
-            transition={SPRING_SNAPPY}
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
+              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
             />
-          </motion.svg>
+          </svg>
         </a>
-
-        {/* Animated gradient bar at bottom */}
-        <div className="h-1 mt-4 rounded-full bg-gradient-to-r from-border via-border to-border group-hover:from-primary/40 group-hover:via-accent group-hover:to-primary/40 transition-all duration-500" />
       </div>
-    </motion.div>
+    </motion.article>
   );
 }
 
 export function WorkSection() {
   return (
-    <section id="work" className="section-padding section-divider">
+    <section id="work" className="section-padding">
       <div className="container-content">
-        {/* Section Header */}
-        <FadeIn direction="left" className="mb-12">
-          <h2 className="heading-ruled text-h2 text-ink">{work.headline}</h2>
-          {work.subheadline && (
-            <p className="mt-4 text-body-lg text-ink-muted max-w-2xl">
-              {work.subheadline}
-            </p>
-          )}
-        </FadeIn>
-
-        {/* Projects Grid */}
+        {/* Section header */}
         <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid md:grid-cols-3 gap-6"
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mb-12"
         >
+          <h2 className="text-h2 text-text-primary">{work.headline}</h2>
+        </motion.div>
+
+        {/* Project grid */}
+        <div className="grid md:grid-cols-3 gap-6">
           {work.projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

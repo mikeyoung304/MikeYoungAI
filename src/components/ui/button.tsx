@@ -5,24 +5,27 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  // Base: taller, slower transitions (400ms), proper focus states
+  'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-400 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-accent-500 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
+        // Primary: solid, lifts on hover with shadow
         primary:
-          'bg-primary text-white hover:bg-primary-hover hover:shadow-elevated hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-[0.98] active:bg-primary',
+          'bg-text-primary text-white hover:-translate-y-0.5 hover:shadow-medium active:translate-y-0 active:shadow-none',
+        // Secondary: bordered, lifts on hover
         secondary:
-          'bg-background-muted text-ink hover:bg-border hover:shadow-card-hover hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-[0.98] active:bg-background-muted border border-border',
+          'bg-white text-text-primary border border-border hover:-translate-y-0.5 hover:shadow-soft hover:border-border-strong active:translate-y-0 active:shadow-none',
+        // Ghost: minimal, subtle background on hover
         ghost:
-          'text-ink hover:bg-background-muted active:bg-border hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-[0.98]',
-        link: 'text-ink underline-offset-4 hover:underline hover:text-primary',
-        accent:
-          'bg-accent text-white hover:bg-accent-600 hover:shadow-glow hover:-translate-y-0.5 hover:scale-[1.02] active:translate-y-0 active:scale-[0.98]',
+          'text-text-primary hover:bg-background-muted active:bg-background-alt',
+        // Link: text only
+        link: 'text-text-primary underline-offset-4 hover:underline',
       },
       size: {
-        sm: 'h-9 px-4 text-sm',
-        md: 'h-11 px-6 text-base',
-        lg: 'h-14 px-8 text-lg',
+        sm: 'h-10 px-5 text-sm',
+        md: 'h-12 px-6 text-base',
+        lg: 'h-14 px-8 text-base', // Taller for trust
       },
     },
     defaultVariants: {
@@ -40,18 +43,12 @@ export interface ButtonProps
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild, children, ...props }, ref) => {
-    // Handle asChild prop for link buttons
     if (asChild) {
-      // When asChild is true, we render the child directly with button styles
-      // This is typically used with Next.js Link component
-      const child = children as React.ReactElement<{ className?: string }>;
-      if (child && typeof child === 'object' && 'props' in child) {
-        return (
-          <span className={cn(buttonVariants({ variant, size, className }))}>
-            {children}
-          </span>
-        );
-      }
+      return (
+        <span className={cn(buttonVariants({ variant, size, className }))}>
+          {children}
+        </span>
+      );
     }
 
     return (

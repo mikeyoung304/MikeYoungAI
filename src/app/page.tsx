@@ -5,6 +5,14 @@ import { WorkSection } from '@/components/sections/work';
 import { ContactSection } from '@/components/sections/contact';
 import { JsonLd } from '@/components/json-ld';
 
+function SectionDivider() {
+  return (
+    <div className="flex justify-center py-12">
+      <div className="w-px h-16 bg-gradient-to-b from-transparent via-border to-transparent" />
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <>
@@ -12,7 +20,9 @@ export default function HomePage() {
       <Navigation />
       <main>
         <HeroSection />
+        <SectionDivider />
         <WorkSection />
+        <SectionDivider />
         <ContactSection />
       </main>
       <Footer />
