@@ -1,7 +1,29 @@
 /**
- * Type-safe animation system for mikeyoung.ai
- * Ensures consistent animation patterns across all components
+ * Animation types for mikeyoung.ai
+ * Shared type definitions for both CSS and Framer Motion animation systems
  */
+
+import type { Variants, Transition } from 'framer-motion';
+
+// Direction options for fade animations
+export type AnimationDirection = 'up' | 'down' | 'left' | 'right';
+
+// Speed presets for stagger containers
+export type StaggerSpeed = 'quick' | 'normal' | 'slow';
+
+// Common animation configuration
+export interface AnimationConfig {
+  delay?: number;
+  direction?: AnimationDirection;
+  once?: boolean;
+}
+
+// Re-export framer-motion types for convenience
+export type { Variants, Transition };
+
+// ============================================================================
+// Legacy CSS Animation Types (for backward compatibility)
+// ============================================================================
 
 // Animation variants that map to CSS classes
 export type AnimationVariant =
@@ -19,22 +41,13 @@ export type StaggerDelay = 0 | 50 | 100 | 150 | 200 | 300 | 400;
 // Animation duration presets
 export type AnimationDuration = 'fast' | 'normal' | 'slow';
 
-// Animation configuration object
-export interface AnimationConfig {
-  variant: AnimationVariant;
-  delay?: StaggerDelay;
-  duration?: AnimationDuration;
-  threshold?: number;
-  triggerOnce?: boolean;
-}
-
 // CSS class mappings for each animation variant
 export const animationClasses: Record<
   AnimationVariant,
   { initial: string; animate: string }
 > = {
   'fade-up': {
-    initial: 'opacity-0 translate-y-8',
+    initial: 'opacity-0 translate-y-4',
     animate: 'opacity-100 translate-y-0',
   },
   'fade-in': {
@@ -42,15 +55,15 @@ export const animationClasses: Record<
     animate: 'opacity-100',
   },
   'fade-down': {
-    initial: 'opacity-0 -translate-y-8',
+    initial: 'opacity-0 -translate-y-4',
     animate: 'opacity-100 translate-y-0',
   },
   'slide-left': {
-    initial: 'opacity-0 -translate-x-8',
+    initial: 'opacity-0 -translate-x-4',
     animate: 'opacity-100 translate-x-0',
   },
   'slide-right': {
-    initial: 'opacity-0 translate-x-8',
+    initial: 'opacity-0 translate-x-4',
     animate: 'opacity-100 translate-x-0',
   },
   scale: {
@@ -66,8 +79,8 @@ export const animationClasses: Record<
 // Duration class mappings
 export const durationClasses: Record<AnimationDuration, string> = {
   fast: 'duration-300',
-  normal: 'duration-700',
-  slow: 'duration-1000',
+  normal: 'duration-500',
+  slow: 'duration-700',
 };
 
 // Helper to get delay style

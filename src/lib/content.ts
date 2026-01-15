@@ -22,6 +22,7 @@ export const hero = {
   headline: 'Builder of calm, reliable web systems.',
   subheadline:
     'I design and build websites and applications for organizations that need clarity, credibility, and stability — not noise.',
+  selectedWorkTagline: 'Selected work in infrastructure, advocacy, and operational systems.',
   primaryCta: {
     text: 'Book a call',
     href: '#contact',
@@ -30,6 +31,11 @@ export const hero = {
     text: 'View work',
     href: '#work',
   },
+  trustMetrics: [
+    { value: 20, suffix: '+', label: 'Years Experience' },
+    { value: 3, suffix: '', label: 'Products Shipped' },
+    { value: 500, suffix: '+', label: 'Businesses Served' },
+  ],
 };
 
 // ============================================================================

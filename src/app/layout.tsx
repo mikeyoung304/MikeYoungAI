@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { Plus_Jakarta_Sans } from 'next/font/google';
+import { MotionProvider } from '@/components/providers/motion-provider';
 import './globals.css';
 
 // Display font for headings - more distinctive than Geist
@@ -73,7 +74,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${plusJakartaSans.variable}`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }
