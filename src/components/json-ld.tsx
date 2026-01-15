@@ -61,25 +61,20 @@ function WebSiteSchema() {
   };
 }
 
-function CaseStudySchemas() {
-  return work.caseStudies
-    .filter((cs) => cs.featured)
-    .map((caseStudy) => ({
-      '@context': 'https://schema.org',
-      '@type': 'CreativeWork',
-      name: caseStudy.title,
-      description: caseStudy.subtitle,
-      author: {
-        '@type': 'Person',
-        name: siteConfig.name,
-      },
-      about: caseStudy.challenge,
-      abstract: caseStudy.approach,
-      keywords: caseStudy.technology.join(', '),
-      url: caseStudy.link.href.startsWith('http')
-        ? caseStudy.link.href
-        : `${siteConfig.url}${caseStudy.link.href}`,
-    }));
+function ProjectSchemas() {
+  return work.projects.map((project) => ({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: project.description,
+    author: {
+      '@type': 'Person',
+      name: siteConfig.name,
+    },
+    url: project.link.href.startsWith('http')
+      ? project.link.href
+      : `${siteConfig.url}${project.link.href}`,
+  }));
 }
 
 export function JsonLd() {
@@ -87,7 +82,7 @@ export function JsonLd() {
     PersonSchema(),
     OrganizationSchema(),
     WebSiteSchema(),
-    ...CaseStudySchemas(),
+    ...ProjectSchemas(),
   ];
 
   return (

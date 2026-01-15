@@ -6,12 +6,12 @@
 
 export const siteConfig = {
   name: 'Mike Young',
-  title: 'Mike Young | Custom Software & AI Systems',
+  title: 'Mike Young | Builder of Calm, Reliable Web Systems',
   description:
-    'I build custom software and AI systems for companies that need it done right. 20 years in service businesses. Built products used by thousands.',
+    'I design and build websites and applications for organizations that need clarity, credibility, and stability — not noise.',
   url: 'https://mikeyoung.ai',
   email: 'hello@mikeyoung.ai',
-  location: 'United States', // TODO: Update with your actual location
+  location: 'United States',
 };
 
 // ============================================================================
@@ -19,16 +19,16 @@ export const siteConfig = {
 // ============================================================================
 
 export const hero = {
-  headline: 'I build custom software and AI systems for companies that need it done right.',
+  headline: 'Builder of calm, reliable web systems.',
   subheadline:
-    '20 years in service businesses. Built products used by thousands. Now I build for clients who can\'t afford to get it wrong.',
+    'I design and build websites and applications for organizations that need clarity, credibility, and stability — not noise.',
   primaryCta: {
-    text: 'See the work',
-    href: '#work',
+    text: 'Book a call',
+    href: '#contact',
   },
   secondaryCta: {
-    text: 'Start a conversation',
-    href: '#contact',
+    text: 'View work',
+    href: '#work',
   },
 };
 
@@ -158,68 +158,36 @@ export const process = {
 // ============================================================================
 
 export const work = {
-  headline: 'Work',
-  subheadline: 'Evidence of execution at the level you need.',
-  caseStudies: [
-    {
-      id: 'get-handled',
-      title: 'Get Handled',
-      subtitle: 'Membership platform for service professionals',
-      challenge:
-        'Service professionals—photographers, consultants, coaches—are great at their craft but drowning in admin work. They need technology support but can\'t afford (or manage) enterprise solutions.',
-      approach:
-        'Built a membership platform that handles the tech side for solopreneurs. Revenue-share model aligns incentives. Members get done-for-you tech without becoming IT admins.',
-      outcomes: [
-        'X active members', // TODO: Add real metrics
-        'Y in GMV processed',
-        'Z hours of admin work eliminated monthly',
-      ],
-      technology: ['React', 'Express', 'Supabase', 'Stripe'],
-      backstory:
-        'I built Get Handled because I lived this problem. 20 years running photography and restaurant businesses taught me exactly what operators need—and what existing solutions get wrong.',
-      link: {
-        text: 'Visit gethandled.ai',
-        href: 'https://gethandled.ai',
-      },
-      featured: true,
-      // TODO: Add screenshot
-      // image: '/work/get-handled.png',
-    },
+  headline: 'Selected Work',
+  subheadline: '',
+  projects: [
     {
       id: 'restaurant-os',
       title: 'Restaurant OS',
-      subtitle: 'AI-powered point-of-sale for independent restaurants',
-      challenge:
-        'Independent restaurants fight with POS systems designed by people who\'ve never worked a dinner rush. They need modern technology that understands restaurant operations.',
-      approach:
-        'Building an AI-native POS system designed from the ground up for how restaurants actually work. Voice ordering, intelligent suggestions, operational insights.',
-      outcomes: [
-        'Currently piloting with X restaurants', // TODO: Add real metrics
-        'Designed with decades of restaurant experience',
-      ],
-      technology: ['React', 'Next.js', 'Prisma', 'AI integrations'],
-      backstory:
-        'Years in restaurant kitchens taught me what operators actually need. This isn\'t software built by tech people guessing at restaurant problems—it\'s built by someone who\'s lived them.',
+      description: 'AI-powered point-of-sale designed by someone who\'s actually worked a dinner rush.',
       link: {
         text: 'Learn more',
         href: '#contact',
       },
-      featured: true,
-      // TODO: Add screenshot
-      // image: '/work/restaurant-os.png',
     },
-    // TODO: Add client projects
-    // {
-    //   id: 'client-project-1',
-    //   title: 'Client Project',
-    //   subtitle: 'One-line description',
-    //   challenge: 'What the client needed',
-    //   approach: 'How you solved it',
-    //   outcomes: ['Specific results'],
-    //   technology: ['Stack'],
-    //   link: { text: 'View the site', href: '#' },
-    //   featured: false,
-    // },
+    {
+      id: 'get-handled',
+      title: 'Get Handled',
+      description: 'Membership platform for service professionals who need technology support without becoming IT admins.',
+      link: {
+        text: 'gethandled.ai',
+        href: 'https://gethandled.ai',
+      },
+    },
+    {
+      id: 'web-development',
+      title: 'Web Development',
+      description: 'Operational web apps and internal tools built for people who don\'t have time to fight their software.',
+      link: {
+        text: 'Discuss a project',
+        href: '#contact',
+      },
+    },
   ],
 };
 
@@ -294,29 +262,25 @@ export const thinking = {
 // ============================================================================
 
 export const contact = {
-  headline: 'Let\'s Talk About Your Project',
+  headline: 'Let\'s Talk',
   description:
-    'I work with companies building custom applications, AI systems, and technical infrastructure. Typical engagements range from focused consulting sprints to full application development.',
-  emphasis: 'If you\'re building something that needs to work, let\'s talk.',
+    'If you\'re responsible for something that needs to be communicated clearly — and maintained calmly — we should talk.',
+  emphasis: '',
   form: {
     projectTypes: [
-      { value: 'ai-application', label: 'Custom AI Application' },
-      { value: 'web-development', label: 'Web Development' },
-      { value: 'consulting', label: 'Technical Consulting' },
+      { value: 'website', label: 'Website' },
+      { value: 'web-application', label: 'Web Application' },
       { value: 'other', label: 'Something else' },
     ],
     timelines: [
-      { value: 'asap', label: 'ASAP (within 30 days)' },
+      { value: 'asap', label: 'ASAP' },
       { value: '1-3-months', label: '1-3 months' },
-      { value: '3-6-months', label: '3-6 months' },
       { value: 'exploring', label: 'Just exploring' },
     ],
     budgets: [
-      { value: 'under-10k', label: 'Under $10k' },
       { value: '10k-25k', label: '$10k - $25k' },
       { value: '25k-50k', label: '$25k - $50k' },
-      { value: '50k-100k', label: '$50k - $100k' },
-      { value: '100k-plus', label: '$100k+' },
+      { value: '50k-plus', label: '$50k+' },
       { value: 'not-sure', label: 'Not sure yet' },
     ],
   },
@@ -324,8 +288,8 @@ export const contact = {
     text: 'Prefer email?',
     email: 'hello@mikeyoung.ai',
   },
-  location: 'Based in the United States. Available for remote work worldwide.', // TODO: Update
-  responseTime: 'I respond to all inquiries within 24-48 hours.',
+  location: '',
+  responseTime: '',
 };
 
 // ============================================================================
@@ -334,10 +298,7 @@ export const contact = {
 
 export const navigation = {
   links: [
-    { text: 'Services', href: '#services' },
     { text: 'Work', href: '#work' },
-    { text: 'About', href: '#about' },
-    { text: 'Thinking', href: '#thinking' },
     { text: 'Contact', href: '#contact' },
   ],
 };
