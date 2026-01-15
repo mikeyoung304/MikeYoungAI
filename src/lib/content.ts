@@ -169,31 +169,32 @@ export const process = {
 export const work = {
   headline: "What I've Built",
   subheadline: 'Software born from real problems, not spec documents.',
+  featured: {
+    id: 'get-handled',
+    title: 'Get Handled',
+    tag: 'Flagship Product',
+    image: '/work/gethandled.png',
+    description:
+      'Technology support for service professionals who need help without becoming IT admins. Membership-based, human-first.',
+    story: 'Built because I watched talented people lose hours to IT busywork.',
+    link: {
+      text: 'Visit gethandled.ai',
+      href: 'https://gethandled.ai',
+    },
+  },
   projects: [
     {
-      id: 'restaurant-os',
-      title: 'Restaurant OS',
-      tag: 'Product',
+      id: 'thepass',
+      title: 'ThePass',
+      tag: 'Coming Soon',
       image: '/work/restaurant-os.png',
       description:
         'A point-of-sale system designed by someone who has actually worked a dinner rush. Built for operators who need their tech to disappear, not demand attention.',
       story: '3,000+ dinner rushes informed every design decision.',
+      status: 'coming-soon' as const,
       link: {
-        text: 'Try the demo',
+        text: 'Preview the demo',
         href: 'https://july25-client.vercel.app/',
-      },
-    },
-    {
-      id: 'get-handled',
-      title: 'Get Handled',
-      tag: 'Product',
-      image: '/work/gethandled.png',
-      description:
-        'Technology support for service professionals who need help without becoming IT admins. Membership-based, human-first.',
-      story: 'Built because I watched talented people lose hours to IT busywork.',
-      link: {
-        text: 'Visit gethandled.ai',
-        href: 'https://gethandled.ai',
       },
     },
     {
