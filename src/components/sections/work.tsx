@@ -2,45 +2,63 @@
 
 import { motion } from 'framer-motion';
 import { work } from '@/lib/content';
+import { BentoGrid } from '@/components/ui/bento-grid';
+import { sectionReveal, viewportStandard, cardReveal3D } from '@/lib/motion';
 
 function ProjectCard({
   project,
-  index,
+  size = 'default',
 }: {
   project: (typeof work.projects)[0];
-  index: number;
+  size?: 'default' | 'wide' | 'tall' | 'large';
 }) {
+  const sizeClasses = {
+    default: '',
+    wide: 'md:col-span-2',
+    tall: 'md:row-span-2',
+    large: 'md:col-span-2 md:row-span-2',
+  };
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{
-        duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
-        delay: index * 0.1,
-      }}
-      // System card: lifts on hover for depth
-      whileHover={{ y: -4 }}
-      className="group h-full"
+      variants={cardReveal3D}
+      whileHover={{ y: -4, transition: { duration: 0.3 } }}
+      whileTap={{ scale: 0.98 }}
+      className={`group h-full ${sizeClasses[size]}`}
     >
-      {/* System card motif: light border, soft radius, slight shadow */}
-      <div className="h-full p-6 bg-white border border-border rounded-xl shadow-soft transition-shadow duration-400 hover:shadow-medium">
-        <h3 className="text-h4 text-text-primary mb-3 group-hover:text-accent-700 transition-colors duration-400">
+      <div className="h-full glass-card rounded-2xl p-6 md:p-8 flex flex-col">
+        {/* Tag */}
+        {project.tag && (
+          <span className="text-overline text-accent-400 uppercase tracking-widest mb-3">
+            {project.tag}
+          </span>
+        )}
+
+        {/* Title */}
+        <h3 className="text-h3 text-text-primary mb-3 group-hover:text-accent-400 transition-colors duration-400">
           {project.title}
         </h3>
 
-        <p className="text-body text-text-secondary mb-6">
+        {/* Description */}
+        <p className="text-body text-text-secondary mb-6 flex-grow">
           {project.description}
         </p>
 
+        {/* Story hook (if available) */}
+        {project.story && (
+          <p className="text-body-sm text-text-muted italic mb-6 border-l-2 border-accent-500/30 pl-4">
+            {project.story}
+          </p>
+        )}
+
+        {/* Link */}
         <a
           href={project.link.href}
-          className="inline-flex items-center gap-2 text-body-sm font-medium text-text-muted hover:text-text-primary transition-colors duration-400"
+          className="inline-flex items-center gap-2 text-body-sm font-medium text-text-secondary hover:text-accent-400 transition-colors duration-400 group/link"
         >
           {project.link.text}
           <svg
-            className="w-4 h-4 transition-transform duration-400 group-hover:translate-x-1"
+            className="w-4 h-4 transition-transform duration-400 group-hover/link:translate-x-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -59,26 +77,46 @@ function ProjectCard({
 }
 
 export function WorkSection() {
+  // Determine card sizes for bento layout
+  const cardSizes: ('default' | 'wide' | 'tall' | 'large')[] = ['large', 'default', 'default'];
+
   return (
-    <section id="work" className="section-padding">
+    <section id="work" className="section-padding section-divider">
       <div className="container-content">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mb-12"
+          variants={sectionReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportStandard}
+          className="mb-16"
         >
-          <h2 className="text-h2 text-text-primary">{work.headline}</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px w-8 bg-accent-500/50" />
+            <span className="text-overline text-accent-400 uppercase tracking-widest">
+              Portfolio
+            </span>
+          </div>
+          <h2 className="text-h1 md:text-display-sm text-text-primary mb-4">
+            {work.headline}
+          </h2>
+          {work.subheadline && (
+            <p className="text-body-lg text-text-secondary max-w-2xl">
+              {work.subheadline}
+            </p>
+          )}
         </motion.div>
 
-        {/* Project grid */}
-        <div className="grid md:grid-cols-3 gap-6">
-          {work.projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+        {/* Bento Grid Layout */}
+        <BentoGrid className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {work.projects.map((project, idx) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              size={cardSizes[idx] || 'default'}
+            />
           ))}
-        </div>
+        </BentoGrid>
       </div>
     </section>
   );

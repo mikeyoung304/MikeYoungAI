@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { navigation, siteConfig } from '@/lib/content';
 import { cn } from '@/lib/utils';
 
@@ -22,12 +23,24 @@ export function Navigation() {
     return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-400',
         isScrolled
-          ? 'bg-white/95 backdrop-blur-sm border-b border-border shadow-soft'
+          ? 'glass-nav shadow-medium'
           : 'bg-transparent'
       )}
     >
@@ -36,7 +49,11 @@ export function Navigation() {
           {/* Logo */}
           <a
             href="/"
-            className="text-h4 font-semibold text-text-primary hover:text-accent-600 transition-colors duration-400"
+            className={cn(
+              'text-h4 font-semibold transition-all duration-400',
+              'text-text-primary hover:text-accent-400',
+              'hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]'
+            )}
           >
             {siteConfig.name}
           </a>
@@ -47,7 +64,15 @@ export function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-body text-text-secondary hover:text-text-primary transition-colors duration-400"
+                className={cn(
+                  'text-body text-text-secondary',
+                  'transition-all duration-300',
+                  'hover:text-text-primary',
+                  'relative after:absolute after:bottom-0 after:left-0',
+                  'after:h-px after:w-0 after:bg-accent-500',
+                  'after:transition-all after:duration-300',
+                  'hover:after:w-full'
+                )}
               >
                 {link.text}
               </a>
@@ -57,7 +82,12 @@ export function Navigation() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="md:hidden p-2 -mr-2 text-text-primary"
+            className={cn(
+              'md:hidden p-2 -mr-2 rounded-lg',
+              'text-text-primary',
+              'transition-colors duration-300',
+              'hover:bg-surface-2'
+            )}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
@@ -73,22 +103,41 @@ export function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border py-4">
-            <div className="flex flex-col gap-1">
-              {navigation.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-body text-text-secondary hover:text-text-primary py-3 px-4 rounded-lg hover:bg-background-muted transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.text}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="border-t border-border py-4">
+                <div className="flex flex-col gap-1">
+                  {navigation.links.map((link, index) => (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className={cn(
+                        'text-body text-text-secondary',
+                        'py-3 px-4 rounded-lg',
+                        'transition-all duration-300',
+                        'hover:text-text-primary hover:bg-surface-2',
+                        'active:bg-surface-3'
+                      )}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.text}
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   );

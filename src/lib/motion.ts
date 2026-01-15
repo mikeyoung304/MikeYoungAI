@@ -1,6 +1,6 @@
 /**
  * Framer Motion animation system for mikeyoung.ai
- * Consistent spring physics and reusable variants
+ * 2026 Premium Dark Mode - Statement Animations
  */
 
 import type { Variants, Transition } from 'framer-motion';
@@ -36,6 +36,18 @@ export const SPRING_BOUNCY: Transition = {
   type: 'spring',
   stiffness: 350,
   damping: 15,
+};
+
+/** Premium easing - cinematic feel */
+export const EASE_PREMIUM: Transition = {
+  duration: 0.8,
+  ease: [0.22, 1, 0.36, 1],
+};
+
+/** Quick premium easing */
+export const EASE_QUICK: Transition = {
+  duration: 0.5,
+  ease: [0.22, 1, 0.36, 1],
 };
 
 // ============================================================================
@@ -103,6 +115,165 @@ export const fadeIn: Variants = {
 };
 
 // ============================================================================
+// STATEMENT ANIMATIONS
+// Bold, memorable entrance effects for hero sections
+// ============================================================================
+
+/** Hero headline - dramatic blur + slide reveal */
+export const heroReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+    filter: 'blur(10px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** Hero subheadline - slightly delayed, softer entrance */
+export const heroSubReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    filter: 'blur(8px)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.7,
+      delay: 0.2,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** CTA buttons - pop in with glow-ready state */
+export const ctaReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: 0.4,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** Trust metrics - staggered counter entrance */
+export const metricsReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** 3D card reveal - perspective rotation */
+export const cardReveal3D: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 40,
+    rotateX: 15,
+    transformPerspective: 1000,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** Section reveal - for major section entrances */
+export const sectionReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 60,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+/** Blur fade in - ethereal entrance */
+export const blurFadeIn: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: 'blur(12px)',
+  },
+  visible: {
+    opacity: 1,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+// ============================================================================
+// GLOW ANIMATIONS
+// For buttons and interactive elements
+// ============================================================================
+
+/** Glow pulse - breathing light effect */
+export const glowPulse: Variants = {
+  initial: {
+    boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
+  },
+  animate: {
+    boxShadow: [
+      '0 0 20px rgba(59, 130, 246, 0.3)',
+      '0 0 40px rgba(59, 130, 246, 0.5)',
+      '0 0 20px rgba(59, 130, 246, 0.3)',
+    ],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+/** Glow on hover */
+export const glowHover = {
+  boxShadow: '0 0 30px rgba(59, 130, 246, 0.5), 0 4px 20px rgba(0, 0, 0, 0.4)',
+  transition: { duration: 0.3 },
+};
+
+// ============================================================================
 // STAGGER CONTAINERS
 // Parent components that orchestrate child animations
 // ============================================================================
@@ -143,39 +314,84 @@ export const staggerContainerSlow: Variants = {
   },
 };
 
+/** Bento grid stagger - for asymmetric card layouts */
+export const bentoStagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+/** Hero stagger - dramatic pacing for hero content */
+export const heroStagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
 // ============================================================================
 // HOVER & TAP EFFECTS
 // Interactive states for buttons, cards, links
 // ============================================================================
 
-/** Card hover - subtle lift effect */
+/** Card hover - lift with glow border hint */
 export const cardHover = {
-  scale: 1.03,
   y: -4,
-  transition: SPRING_SNAPPY,
+  transition: {
+    duration: 0.3,
+    ease: [0.22, 1, 0.36, 1] as const,
+  },
 };
 
 /** Card tap - press down feedback */
 export const cardTap = {
   scale: 0.98,
+  transition: { duration: 0.1 },
 };
 
-/** Button hover - micro lift */
+/** Button hover - lift with glow */
 export const buttonHover = {
-  scale: 1.02,
   y: -2,
-  transition: SPRING_SNAPPY,
+  boxShadow: '0 0 30px rgba(59, 130, 246, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)',
+  transition: {
+    duration: 0.3,
+    ease: [0.22, 1, 0.36, 1],
+  },
 };
 
 /** Button tap - press feedback */
 export const buttonTap = {
   scale: 0.98,
+  y: 0,
+  transition: { duration: 0.1 },
 };
 
-/** Link hover - subtle scale */
+/** Link hover - subtle glow */
 export const linkHover = {
-  scale: 1.02,
-  transition: SPRING_SNAPPY,
+  color: '#60A5FA',
+  textShadow: '0 0 20px rgba(59, 130, 246, 0.5)',
+  transition: { duration: 0.2 },
+};
+
+/** Glass card hover - enhanced glass effect */
+export const glassCardHover = {
+  y: -4,
+  backgroundColor: 'rgba(20, 20, 23, 0.9)',
+  borderColor: 'rgba(255, 255, 255, 0.12)',
+  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+  transition: {
+    duration: 0.4,
+    ease: [0.22, 1, 0.36, 1],
+  },
 };
 
 // ============================================================================
@@ -200,6 +416,25 @@ export const viewportLate = {
   once: true,
   margin: '-120px',
 };
+
+/** Hero viewport - no margin, immediate trigger */
+export const viewportHero = {
+  once: true,
+  margin: '0px',
+};
+
+// ============================================================================
+// PARALLAX HELPERS
+// For scroll-based depth effects
+// ============================================================================
+
+/** Create parallax transform values */
+export function getParallaxRange(speed: number = 0.5) {
+  return {
+    inputRange: [0, 1],
+    outputRange: [0, speed * 100],
+  };
+}
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -252,6 +487,56 @@ export function createFadeIn(
       opacity: 1,
       x: 0,
       transition: spring,
+    },
+  };
+}
+
+/**
+ * Create a hero reveal variant with custom delay
+ */
+export function createHeroReveal(delay: number = 0): Variants {
+  return {
+    hidden: {
+      opacity: 0,
+      y: 60,
+      filter: 'blur(10px)',
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.8,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+}
+
+/**
+ * Create a 3D card reveal with custom rotation and delay
+ */
+export function createCardReveal3D(
+  rotateX: number = 15,
+  delay: number = 0
+): Variants {
+  return {
+    hidden: {
+      opacity: 0,
+      y: 40,
+      rotateX,
+      transformPerspective: 1000,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      rotateX: 0,
+      transition: {
+        duration: 0.7,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      },
     },
   };
 }
