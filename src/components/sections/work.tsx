@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { work } from '@/lib/content';
 import { BentoGrid } from '@/components/ui/bento-grid';
@@ -19,6 +20,8 @@ function ProjectCard({
     large: 'md:col-span-2 md:row-span-2',
   };
 
+  const isExternal = project.link.href.startsWith('http');
+
   return (
     <motion.article
       variants={cardReveal3D}
@@ -26,52 +29,71 @@ function ProjectCard({
       whileTap={{ scale: 0.98 }}
       className={`group h-full ${sizeClasses[size]}`}
     >
-      <div className="h-full glass-card rounded-2xl p-6 md:p-8 flex flex-col">
-        {/* Tag */}
-        {project.tag && (
-          <span className="text-overline text-accent-400 uppercase tracking-widest mb-3">
-            {project.tag}
-          </span>
-        )}
+      <a
+        href={project.link.href}
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
+        className="block h-full"
+      >
+        <div className="h-full glass-card rounded-2xl overflow-hidden flex flex-col">
+          {/* Image */}
+          {project.image && (
+            <div className="relative w-full aspect-[16/10] overflow-hidden bg-surface-elevated">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-card/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+            </div>
+          )}
 
-        {/* Title */}
-        <h3 className="text-h3 text-text-primary mb-3 group-hover:text-accent-400 transition-colors duration-400">
-          {project.title}
-        </h3>
+          <div className="p-6 md:p-8 flex flex-col flex-grow">
+            {/* Tag */}
+            {project.tag && (
+              <span className="text-overline text-accent-400 uppercase tracking-widest mb-3">
+                {project.tag}
+              </span>
+            )}
 
-        {/* Description */}
-        <p className="text-body text-text-secondary mb-6 flex-grow">
-          {project.description}
-        </p>
+            {/* Title */}
+            <h3 className="text-h3 text-text-primary mb-3 group-hover:text-accent-400 transition-colors duration-400">
+              {project.title}
+            </h3>
 
-        {/* Story hook (if available) */}
-        {project.story && (
-          <p className="text-body-sm text-text-muted italic mb-6 border-l-2 border-accent-500/30 pl-4">
-            {project.story}
-          </p>
-        )}
+            {/* Description */}
+            <p className="text-body text-text-secondary mb-6 flex-grow">
+              {project.description}
+            </p>
 
-        {/* Link */}
-        <a
-          href={project.link.href}
-          className="inline-flex items-center gap-2 text-body-sm font-medium text-text-secondary hover:text-accent-400 transition-colors duration-400 group/link"
-        >
-          {project.link.text}
-          <svg
-            className="w-4 h-4 transition-transform duration-400 group-hover/link:translate-x-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
-            />
-          </svg>
-        </a>
-      </div>
+            {/* Story hook (if available) */}
+            {project.story && (
+              <p className="text-body-sm text-text-muted italic mb-6 border-l-2 border-accent-500/30 pl-4">
+                {project.story}
+              </p>
+            )}
+
+            {/* Link indicator */}
+            <span className="inline-flex items-center gap-2 text-body-sm font-medium text-text-secondary group-hover:text-accent-400 transition-colors duration-400">
+              {project.link.text}
+              <svg
+                className="w-4 h-4 transition-transform duration-400 group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
     </motion.article>
   );
 }

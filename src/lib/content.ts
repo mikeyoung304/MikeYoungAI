@@ -174,18 +174,20 @@ export const work = {
       id: 'restaurant-os',
       title: 'Restaurant OS',
       tag: 'Product',
+      image: '/work/restaurant-os.png',
       description:
         'A point-of-sale system designed by someone who has actually worked a dinner rush. Built for operators who need their tech to disappear, not demand attention.',
       story: '3,000+ dinner rushes informed every design decision.',
       link: {
-        text: 'Learn more',
-        href: '#contact',
+        text: 'Try the demo',
+        href: 'https://july25-client.vercel.app/',
       },
     },
     {
       id: 'get-handled',
       title: 'Get Handled',
       tag: 'Product',
+      image: '/work/gethandled.png',
       description:
         'Technology support for service professionals who need help without becoming IT admins. Membership-based, human-first.',
       story: 'Built because I watched talented people lose hours to IT busywork.',
